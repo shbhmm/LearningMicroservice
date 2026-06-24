@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  courseservice:
+    build: ./src/CourseService
+    container_name: courseservice
+    ports:
+      - "5001:80"
+    networks:
+      - learning
+
+  studentservice:
+    build: ./src/StudentService
+    container_name: studentservice
+    ports:
+      - "5002:80"
+    networks:
+      - learning
+
+  enrollmentservice:
+    build: ./src/EnrollmentService
+    container_name: enrollmentservice
+    ports:
+      - "5003:80"
+    depends_on:
+      - courseservice
+      - studentservice
+    networks:
+      - learning
+
+networks:
+  learning:
+    driver: bridge

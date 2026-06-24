@@ -1,0 +1,11 @@
+bin/
+obj/
+**/*.user
+**/*.vspscc
+.vscode/
+.env
+docker-compose.override.yml
+**/*.db
+**/*.sqlite
+**/log.txt
+/.vs
