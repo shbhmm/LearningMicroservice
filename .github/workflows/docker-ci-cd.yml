@@ -1,9 +1,17 @@
-name : Docker CI/CD
+name: Docker CI/CD
+
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
-  
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Show Files
+        run: ls -R
