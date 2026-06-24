@@ -9,22 +9,17 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Show Files
-        run: ls -R
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
 
-# name: Docker CI/CD
+      - name: Build CourseService
+        run: dotnet build ./src/CourseService/CourseService.sln --configuration Release
 
-# on:
-#   push:
-#     branches: [ "main" ]
+      - name: Build StudentService
+        run: dotnet build ./src/StudentService/StudentService.sln --configuration Release
 
-# jobs:
-#   build-and-push:
-#     runs-on: ubuntu-latest
+      - name: Build EnrollmentService
+        run: dotnet build ./src/EnrollmentService/EnrollmentService.sln --configuration Release
 
-#     steps:
-#       - name: Checkout Repository
-#         uses: actions/checkout@v4
-
-#       - name: Show Files
-#         run: ls -R
