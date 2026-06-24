@@ -1,6 +1,7 @@
 using CourseService.Data;
 using CourseService.Interfaces;
 using CourseService.Services;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,14 @@ builder.Services.AddScoped<ICourseService, CourseManager>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "CourseService API",
+        Version = "v1"
+    });
+});
 
 var app = builder.Build();
 
@@ -23,11 +31,13 @@ var repo = app.Services.GetRequiredService<ICourseRepository>();
 repo.Seed();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Docker"))
-{
+// Swagger is not required for the build environment
+
     app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "CourseService API v1");
+    });
 
 app.Use(async (context, next) =>
 {

@@ -1,6 +1,7 @@
 using EnrollmentService.Data;
 using EnrollmentService.Interfaces;
 using EnrollmentService.Services;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,18 +17,27 @@ builder.Services.AddHttpClient("students", c => c.BaseAddress = new Uri(builder.
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "EnrollmentService API",
+        Version = "v1"
+    });
+});
 
 var app = builder.Build();
 
 var repo = app.Services.GetRequiredService<IEnrollmentRepository>();
 repo.Seed();
 
-if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Docker"))
-{
+
     app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "EnrollmentService API v1");
+    });
+
 
 app.Use(async (context, next) =>
 {

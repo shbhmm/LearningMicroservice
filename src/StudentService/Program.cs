@@ -1,3 +1,4 @@
+using Microsoft.OpenApi.Models;
 using StudentService.Data;
 using StudentService.Interfaces;
 using StudentService.Services;
@@ -12,18 +13,27 @@ builder.Services.AddScoped<IStudentService, StudentManager>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "StudentService API",
+        Version = "v1"
+    });
+});
 
 var app = builder.Build();
 
 var repo = app.Services.GetRequiredService<IStudentRepository>();
 repo.Seed();
 
-if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Docker"))
-{
+
     app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "StudentService API v1");
+    });
+
 
 app.Use(async (context, next) =>
 {
