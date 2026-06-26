@@ -6,7 +6,7 @@ WORKDIR /src
 ENV NUGET_PACKAGES=/root/.nuget/packages
 
 # copy nuget.config and csproj and restore as separate layers for caching
-COPY ["nuget.config", "./"]
+#COPY ["nuget.config", "./"]
 COPY ["CourseService.csproj", "./"]
 RUN dotnet restore "CourseService.csproj"
 

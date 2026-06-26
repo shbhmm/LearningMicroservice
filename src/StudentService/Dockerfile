@@ -3,7 +3,7 @@ WORKDIR /src
 ENV NUGET_PACKAGES=/root/.nuget/packages
 
 # copy nuget config and csproj and restore
-COPY ["nuget.config", "./"]
+#COPY ["nuget.config", "./"]
 COPY ["StudentService.csproj", "./"]
 RUN dotnet restore "StudentService.csproj"
 
